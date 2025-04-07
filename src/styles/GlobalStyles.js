@@ -14,11 +14,17 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html {
+    scroll-behavior: auto;
+  }
+
   body {
     font-family: 'Inter', sans-serif;
     background-color: var(--deep-blue);
     color: #fff;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: auto;
+    backface-visibility: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -29,7 +35,7 @@ export const GlobalStyles = createGlobalStyle`
   a {
     color: var(--neon-cyan);
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: color 0.2s ease;
     
     &:hover {
       color: #fff;
@@ -56,7 +62,21 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0 20px;
   }
 
-  .kuGFZM{
-  overflow-y: hidden !important;
+  .kuGFZM {
+    overflow-y: visible !important;
+  }
+
+  .SectionWrapper {
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce), (max-width: 768px) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 `; 
