@@ -113,6 +113,21 @@ const SecondaryButton = styled(motion.button)`
   }
 `;
 
+// Всплывающее сообщение после нажатия на кнопки
+const Toast = styled(motion.div)`
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--neon-cyan);
+  color: var(--deep-blue);
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+`;
+
 const FloatingShape = ({ position, rotation, scale, color }) => {
   return (
     <Float
@@ -133,6 +148,33 @@ const Hero = () => {
     triggerOnce: true,
     threshold: 0.1
   });
+  
+  // Состояние для отображения всплывающего сообщения
+  const [toast, setToast] = React.useState({ visible: false, message: '' });
+  
+  // Функция для скролла к секции
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      window.scrollTo({
+        top: section.offsetTop,
+        behavior: 'smooth'
+      });
+      
+      // Показываем всплывающее сообщение
+      setToast({ 
+        visible: true, 
+        message: sectionId === 'games' 
+          ? 'Переход к разделу игр' 
+          : 'Переход к проектам' 
+      });
+      
+      // Скрываем сообщение через 3 секунды
+      setTimeout(() => {
+        setToast({ visible: false, message: '' });
+      }, 3000);
+    }
+  };
 
   return (
     <HeroSection>
@@ -168,12 +210,14 @@ const Hero = () => {
           <PrimaryButton
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => scrollToSection('games')}
           >
             Наши проекты
           </PrimaryButton>
           <SecondaryButton
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => scrollToSection('games')}
           >
             Смотреть проекты
           </SecondaryButton>
@@ -197,6 +241,17 @@ const Hero = () => {
           </StatItem>
         </StatsContainer>
       </HeroContent>
+      
+      {/* Всплывающее сообщение */}
+      {toast.visible && (
+        <Toast
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+        >
+          {toast.message}
+        </Toast>
+      )}
     </HeroSection>
   );
 };
